@@ -8,6 +8,11 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -74,4 +79,24 @@ record FiboRequest(List<Integer> numbers) {
 }
 
 record FiboResponse(Integer num, String result) {
+}
+
+// CONTROLLER
+@Slf4j
+@RestController
+@RequestMapping("/api")
+@AllArgsConstructor
+class SampleController {
+	private final SampleService sampleService;
+
+	@GetMapping
+	public void root() {
+		log.info("Server is UP");
+	}
+
+	@PostMapping("/calculate-fibos")
+	public Flux<FiboResponse> postFibonacci(@RequestBody FiboRequest fibos) {
+		log.info("Calculate for {}", fibos);
+		return sampleService.postFibonacci(fibos.numbers());
+	}
 }
