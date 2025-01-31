@@ -68,3 +68,7 @@ class SampleService {
 		}
 	}
 }
+
+// DTO
+record FiboRequest(List<Integer> numbers) {
+}
