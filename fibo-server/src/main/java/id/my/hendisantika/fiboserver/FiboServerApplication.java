@@ -72,3 +72,6 @@ class SampleService {
 // DTO
 record FiboRequest(List<Integer> numbers) {
 }
+
+record FiboResponse(Integer num, String result) {
+}
