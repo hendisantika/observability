@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
+import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class FiboServerApplication {
@@ -44,5 +47,24 @@ class SampleService {
 				.runOn(Schedulers.boundedElastic())
 				.flatMap(number -> Flux.just(new FiboResponse(number, fibonacciOf(number))))
 				.sequential();
+	}
+
+	private String fibonacciOf(Integer numInteger) {
+		if (numInteger == 0)
+			return "0";
+		if (numInteger == 1)
+			return "1";
+		else {
+			var array = new BigInteger[numInteger];
+			array[0] = BigInteger.ZERO;
+			array[1] = BigInteger.valueOf(1L);
+
+			for (int i = 2; i < numInteger; i++) {
+				array[i] = array[i - 2].add(array[i - 1]);
+			}
+			return Arrays.stream(array)
+					.map(String::valueOf)
+					.collect(Collectors.joining(","));
+		}
 	}
 }
