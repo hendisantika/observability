@@ -13,7 +13,7 @@
     <appender name="argusLoki" class="com.github.loki4j.logback.Loki4jAppender">
         <batchMaxBytes>1001024</batchMaxBytes>
         <http>
-            <url>http://localhost:3100/loki/api/v1/push</url>
+            <url>https://localhost:3001/loki/api/v1/push</url>
             <requestTimeoutMs>25000</requestTimeoutMs>
         </http>
         <format>
