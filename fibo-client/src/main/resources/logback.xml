@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <springProperty scope="context" name="appName" source="spring.application.name"/>
+
+    <appender name="springDefaultConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <appender name="argusLoki" class="com.github.loki4j.logback.Loki4jAppender">
+        <batchMaxBytes>1001024</batchMaxBytes>
+        <http>
+            <url>http://localhost:3100/loki/api/v1/push</url>
+            <requestTimeoutMs>25000</requestTimeoutMs>
+        </http>
+        <format>
+            <label>
+                <pattern>
+                    app=${appName},host=${HOSTNAME},traceID=%X{traceId:-NONE},level=%level,thread=%X{thread:-NONE}
+                </pattern>
+            </label>
+            <message>
+                <pattern>%-5level [${HOSTNAME}] [%thread] | %msg %ex</pattern>
+            </message>
+        </format>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="springDefaultConsoleAppender"/>
+    </root>
+    <root level="INFO">
+        <appender-ref ref="argusLoki"/>
+    </root>
+</configuration>
