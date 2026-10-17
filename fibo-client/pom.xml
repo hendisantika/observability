@@ -14,7 +14,7 @@
     <name>fibo-client</name>
     <description>fibo-client</description>
     <properties>
-        <java.version>23</java.version>
+        <java.version>25</java.version>
     </properties>
     <dependencies>
         <dependency>

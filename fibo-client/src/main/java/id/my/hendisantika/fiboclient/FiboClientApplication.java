@@ -1,6 +1,5 @@
 package id.my.hendisantika.fiboclient;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.handler.logging.LogLevel;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -14,7 +13,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.http.codec.json.Jackson2JsonDecoder;
+import org.springframework.http.codec.json.JacksonJsonDecoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,6 +22,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.transport.logging.AdvancedByteBufFormat;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Duration;
 import java.util.List;
@@ -49,7 +49,7 @@ class WebClientConfig {
         final ExchangeStrategies strategies = ExchangeStrategies.builder()
                 .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(byteCount))
                 .build();
-        ObjectMapper mapper = new ObjectMapper();
+        JsonMapper mapper = JsonMapper.builder().build();
         final HttpClient client = HttpClient.create()
                 .wiretap(this.getClass().getCanonicalName(), LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL);
 
@@ -59,7 +59,7 @@ class WebClientConfig {
                 .clientConnector(new ReactorClientHttpConnector(client))
                 .codecs(clientCodecConfigurer ->
                         clientCodecConfigurer.defaultCodecs()
-                                .jackson2JsonDecoder(new Jackson2JsonDecoder(mapper)))
+                                .jacksonJsonDecoder(new JacksonJsonDecoder(mapper)))
                 .uriBuilderFactory(factory)
                 .build();
     }

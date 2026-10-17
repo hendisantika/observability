@@ -14,7 +14,7 @@
     <name>fibo-server</name>
     <description>fibo-server</description>
     <properties>
-        <java.version>23</java.version>
+        <java.version>25</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -40,15 +40,6 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-tracing-bridge-brave</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.zipkin.reporter2</groupId>
-            <artifactId>zipkin-reporter-brave</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.loki4j</groupId>
-            <artifactId>loki-logback-appender</artifactId>
-            <version>2.1.0</version>
         </dependency>
         <dependency>
             <groupId>io.zipkin.reporter2</groupId>
